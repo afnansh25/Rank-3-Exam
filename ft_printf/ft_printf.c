@@ -1,7 +1,7 @@
 #include <unistd.h>
 #include <stdarg.h>
 
-void    ft_putstr(char *s, int d)
+void    ft_putstr(char *s, int *d)
 {
     if(!s)
         s = "(null)";
@@ -12,7 +12,7 @@ void    ft_putstr(char *s, int d)
     }
 }
 
-void    ft_putnbr(int n, int d)
+void    ft_putnbr(int n, int *d)
 {
     char c;
     
@@ -30,12 +30,12 @@ void    ft_putnbr(int n, int d)
     if(n > 9)
         ft_putnbr(n / 10, d);
 
-    c = c % 10 + 48;
+    c = n % 10 + 48;
     write(1, &c, 1);
     (*d)++;
 }
 
-void    ft_puthex(unsigned int n, int d)
+void    ft_puthex(unsigned int n, int *d)
 {
     char hex[] = "0123456789abcdef";
     if (n >= 16)
@@ -52,7 +52,7 @@ int ft_printf(const char *format, ... )
     va_start(ap, format);
     while(*format)
     {
-        if(*format == "%" && *(format + 1))
+        if(*format == '%' && *(format + 1))
         {
             format++;
             if(*format == 's')
@@ -77,4 +77,12 @@ int ft_printf(const char *format, ... )
     va_end(ap);
     return(d);
 
+}
+
+#include <stdio.h>
+int main(void)
+{
+    printf("Hello %s, %d, %x\n", "world", -42, 255);
+    ft_printf("Hello %s, %d, %x\n", "world", -42, 255);
+    return (0);
 }
